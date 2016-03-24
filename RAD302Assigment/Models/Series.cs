@@ -13,7 +13,7 @@ namespace RAD302Assignment.Models
         [Required]
         public string Name { get; set; }
         // Navigation property
-        public ICollection<GameCharacter> Characters { get; set; }
+        public ICollection<GameCharacter> GameCharacters { get; set; }
     }
 
     public class GameCharacter
@@ -29,11 +29,11 @@ namespace RAD302Assignment.Models
     public class SeriesContext : DbContext
     {
         public DbSet<GameCharacter> GameCharacters { get; set; }
-        public DbSet<Series> Series { get; set; }
+        public DbSet<Series> SeriesDB { get; set; }
 
         public SeriesContext() : base("SeriesConnection")
         {
-            this.Configuration.LazyLoadingEnabled = false;
+            //this.Configuration.LazyLoadingEnabled = false;
         }
     }
 }

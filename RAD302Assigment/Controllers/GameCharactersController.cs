@@ -10,7 +10,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using RAD302Assignment.Models;
 
-namespace RAD302Assigment.Controllers
+namespace RAD302Assignment.Controllers
 {
     public class GameCharactersController : ApiController
     {

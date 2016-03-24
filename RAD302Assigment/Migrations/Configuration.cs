@@ -5,7 +5,7 @@ using System;
     using System.Linq;
     using RAD302Assignment.Models;
 
-namespace RAD302Assigment.Migrations
+namespace RAD302Assignment.Migrations
 {
 
     internal sealed class Configuration : DbMigrationsConfiguration<RAD302Assignment.Models.SeriesContext>
@@ -25,13 +25,13 @@ namespace RAD302Assigment.Migrations
                 new Series {Name = "Prince of Persia" }
             };
 
-            series.ForEach(s => context.Series.Add(s));
+            series.ForEach(s => context.SeriesDB.Add(s));
 
             List<GameCharacter> gamecharacters = new List<GameCharacter>()
             {
-                new GameCharacter {Name = "Dante", SeriesID = 4 },
-                new GameCharacter {Name = "Solid Snake", SeriesID = 5 },
-                new GameCharacter {Name = "The Prince", SeriesID = 6 },
+                new GameCharacter {Name = "Dante", SeriesID = 1 },
+                new GameCharacter {Name = "Solid Snake", SeriesID = 2 },
+                new GameCharacter {Name = "The Prince", SeriesID = 3 },
             };
 
             gamecharacters.ForEach(c => context.GameCharacters.Add(c));
