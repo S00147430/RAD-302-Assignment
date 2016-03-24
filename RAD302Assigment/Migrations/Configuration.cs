@@ -34,7 +34,7 @@ namespace RAD302Assignment.Migrations
                 new GameCharacter {Name = "The Prince", SeriesID = 3 },
             };
 
-            gamecharacters.ForEach(c => context.GameCharacters.Add(c));
+            gamecharacters.ForEach(c => context.GameCharactersDB.Add(c));
         }
     }
 }

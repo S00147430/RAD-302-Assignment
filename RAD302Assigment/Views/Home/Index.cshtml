@@ -10,13 +10,6 @@
     </div>
 
     <div class="col-md-4">
-        <h2>Class Search</h2>
-        <input type="text" id="classID" size="5" />
-        <input type="button" value="Find Class" class="btn btn-primary" onclick="findSeries()" />
-        <p id="current-Series" class="btn btn-info" onclick="getGameCharactersForSeries()" />
-    </div>
-
-    <div class="col-md-4">
         <h2>Series Characters</h2>
         <ul id="Characters-list" class="list-group"></ul>
     </div>
@@ -27,16 +20,13 @@
     </div>
     </div>
 
-    <div class="row">
     <div class="col-md-4">
         <h2>Paragraph</h2>
         <ul id="lstComics" />
     </div>
-</div>
-
 
 <script>
-    var uri = "http://localhost:4306/api/classes/";
+    var uri = "http://localhost:59869/api/series";
 
     function clearList()
     {
@@ -48,27 +38,12 @@
 
         $.getJSON(uri).done(function (data) {
             $.each(data, function (key, item) {
-                $('<li>', { text: item.ID + ":" + item.Name }).appendTo($('#Series-list'));
+                $('<li>', { text: item.ID + ":" + item.Name }).appendTo($('#series-list'));
             });
         });
     }
 
-    var currentClass;
-
-    function findSeries() {
-        var id = $('#classID').val();
-
-        $.getJSON(uri + id)
-        .done(function (data) {
-            //keep a copy for later
-            currentClass = data;
-
-            $('#current-Series').text(data.Name);
-        })
-        .fail(function (jqXHR, textStatus, err) {
-            $('#current-Series').text('Error: ' + err);
-        });
-    }
+    var currentSeries;
 
     function getGameCharactersForSeries() {
         var id = $('#SeriesID').val();
@@ -76,9 +51,9 @@
 
         $.getJSON(uri + id).done(
             function (data) {
-                if (data.Students) {
-                    $.each(data.Students, function (i, item) {
-                        $('<li>', { text: item.Name }).appendTo($('#GameCharacters-list'));
+                if (data.GameCharacters) {
+                    $.each(data.GameCharacters, function (i, item) {
+                        $('<li>', { text: item.Name }).appendTo($('#gamecharacters-list'));
                     });
                 }
             })

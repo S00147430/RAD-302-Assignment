@@ -33,7 +33,7 @@ namespace RAD302Assignment.Controllers
             }
 
             //  For each student where student.ClassID == class id, save student to a list
-            List<GameCharacter> characters = db.GameCharacters.Where(s => s.SeriesID == @series.ID).ToList();
+            List<GameCharacter> characters = db.GameCharactersDB.Where(s => s.SeriesID == @series.ID).ToList();
             @series.GameCharacters = characters;
 
             return Ok(@series);
@@ -83,7 +83,7 @@ namespace RAD302Assignment.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.GameCharacters.Add(gameCharacter);
+            db.GameCharactersDB.Add(gameCharacter);
             db.SaveChanges();
 
             return CreatedAtRoute("DefaultApi", new { id = gameCharacter.ID }, gameCharacter);
@@ -93,13 +93,13 @@ namespace RAD302Assignment.Controllers
         [ResponseType(typeof(GameCharacter))]
         public IHttpActionResult DeleteGameCharacter(int id)
         {
-            GameCharacter gameCharacter = db.GameCharacters.Find(id);
+            GameCharacter gameCharacter = db.GameCharactersDB.Find(id);
             if (gameCharacter == null)
             {
                 return NotFound();
             }
 
-            db.GameCharacters.Remove(gameCharacter);
+            db.GameCharactersDB.Remove(gameCharacter);
             db.SaveChanges();
 
             return Ok(gameCharacter);
@@ -116,7 +116,7 @@ namespace RAD302Assignment.Controllers
 
         private bool GameCharacterExists(int id)
         {
-            return db.GameCharacters.Count(e => e.ID == id) > 0;
+            return db.GameCharactersDB.Count(e => e.ID == id) > 0;
         }
     }
 

@@ -28,7 +28,7 @@ namespace RAD302Assignment.Models
 
     public class SeriesContext : DbContext
     {
-        public DbSet<GameCharacter> GameCharacters { get; set; }
+        public DbSet<GameCharacter> GameCharactersDB { get; set; }
         public DbSet<Series> SeriesDB { get; set; }
 
         public SeriesContext() : base("SeriesConnection")
