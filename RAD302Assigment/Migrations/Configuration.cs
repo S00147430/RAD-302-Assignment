@@ -1,11 +1,12 @@
-namespace RAD302Assigment.Migrations
-{
-    using System;
+using System;
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
     using RAD302Assignment.Models;
+
+namespace RAD302Assigment.Migrations
+{
 
     internal sealed class Configuration : DbMigrationsConfiguration<RAD302Assignment.Models.SeriesContext>
     {
@@ -17,23 +18,23 @@ namespace RAD302Assigment.Migrations
 
         protected override void Seed(RAD302Assignment.Models.SeriesContext context)
         {
-            List<Series> Series = new List<Series>()
+            List<Series> series = new List<Series>()
             {
                 new Series {Name = "Devil May Cry" },
                 new Series {Name = "Metal Gear Solid" },
                 new Series {Name = "Prince of Persia" }
             };
 
-            Series.ForEach(s => context.Series.Add(s));
+            series.ForEach(s => context.Series.Add(s));
 
-            List<GameCharacter> GameCharacters = new List<GameCharacter>()
+            List<GameCharacter> gamecharacters = new List<GameCharacter>()
             {
-                new GameCharacter {Name = "Dante", SeriesID = 1 },
-                new GameCharacter {Name = "Solid Snake", SeriesID = 2 },
-                new GameCharacter {Name = "The Prince", SeriesID = 3 },
+                new GameCharacter {Name = "Dante", SeriesID = 4 },
+                new GameCharacter {Name = "Solid Snake", SeriesID = 5 },
+                new GameCharacter {Name = "The Prince", SeriesID = 6 },
             };
 
-            GameCharacters.ForEach(c => context.GameCharacters.Add(c));
+            gamecharacters.ForEach(c => context.GameCharacters.Add(c));
         }
     }
 }

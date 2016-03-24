@@ -23,17 +23,17 @@ namespace RAD302Assignment.Models
         public int SeriesID { get; set; }
         public string Name { get; set; }
         // Navigation property
-        public GameCharacter series { get; set; }
+        public Series Series { get; set; }
     }
 
     public class SeriesContext : DbContext
     {
-        public DbSet<Series> Series { get; set; }
         public DbSet<GameCharacter> GameCharacters { get; set; }
+        public DbSet<Series> Series { get; set; }
 
         public SeriesContext() : base("SeriesConnection")
         {
-
+            this.Configuration.LazyLoadingEnabled = false;
         }
     }
 }

@@ -9,7 +9,10 @@ namespace RAD302Assigment
     {
         public static void Register(HttpConfiguration config)
         {
-            // Web API configuration and services
+            config.Formatters.Remove(config.Formatters.XmlFormatter);
+            config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+
+            config.Formatters.JsonFormatter.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.None;
 
             // Web API routes
             config.MapHttpAttributeRoutes();

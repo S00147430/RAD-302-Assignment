@@ -72,7 +72,7 @@
 
     function getGameCharactersForSeries() {
         var id = $('#SeriesID').val();
-        $('#GameCHaracters-list').empty();
+        $('#GameCharacters-list').empty();
 
         $.getJSON(uri + id).done(
             function (data) {

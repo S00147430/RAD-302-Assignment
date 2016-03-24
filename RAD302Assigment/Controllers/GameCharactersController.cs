@@ -17,22 +17,26 @@ namespace RAD302Assigment.Controllers
         private SeriesContext db = new SeriesContext();
 
         // GET: api/GameCharacters
-        public IQueryable<GameCharacter> GetGameCharacters()
+        public IQueryable<Series> GetSeries()
         {
-            return db.GameCharacters;
+            return db.Series.Include(c => c.Characters);
         }
 
         // GET: api/GameCharacters/5
-        [ResponseType(typeof(GameCharacter))]
-        public IHttpActionResult GetGameCharacter(int id)
+        [ResponseType(typeof(Series))]
+        public IHttpActionResult GetSeries(int id)
         {
-            GameCharacter gameCharacter = db.GameCharacters.Find(id);
-            if (gameCharacter == null)
+            Series @series = db.Series.Find(id);
+            if (@series == null)
             {
                 return NotFound();
             }
 
-            return Ok(gameCharacter);
+            //  For each student where student.ClassID == class id, save student to a list
+            List<GameCharacter> characters = db.GameCharacters.Where(s => s.SeriesID == @series.ID).ToList();
+            @series.Characters = characters;
+
+            return Ok(@series);
         }
 
         // PUT: api/GameCharacters/5
@@ -113,6 +117,43 @@ namespace RAD302Assigment.Controllers
         private bool GameCharacterExists(int id)
         {
             return db.GameCharacters.Count(e => e.ID == id) > 0;
+        }
+    }
+
+    public class ClassesController : ApiController
+    {
+        private SeriesContext db = new SeriesContext();
+
+        // GET: api/Classes
+        public IQueryable<Series> GetClasses()
+        {
+            return db.Series.Include(c => c.Characters);
+        }
+
+        // GET: api/Classes/5
+        [ResponseType(typeof(Series))]
+        public IHttpActionResult GetClass(int id)
+        {
+            Series @series = db.Series.Find(id);
+            if (@series == null)
+            {
+                return NotFound();
+            }
+
+            //  For each student where student.ClassID == class id, save student to a list
+            List<GameCharacter> students = db.GameCharacters.Where(s => s.SeriesID == @series.ID).ToList();
+            @series.Characters = students;
+
+            return Ok(@series);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }
