@@ -19,14 +19,14 @@ namespace RAD302Assignment.Controllers
         // GET: api/GameCharacters
         public IQueryable<Series> GetSeries()
         {
-            return db.Series.Include(c => c.Characters);
+            return db.SeriesDB.Include(c => c.GameCharacters);
         }
 
         // GET: api/GameCharacters/5
         [ResponseType(typeof(Series))]
         public IHttpActionResult GetSeries(int id)
         {
-            Series @series = db.Series.Find(id);
+            Series @series = db.SeriesDB.Find(id);
             if (@series == null)
             {
                 return NotFound();
@@ -34,7 +34,7 @@ namespace RAD302Assignment.Controllers
 
             //  For each student where student.ClassID == class id, save student to a list
             List<GameCharacter> characters = db.GameCharacters.Where(s => s.SeriesID == @series.ID).ToList();
-            @series.Characters = characters;
+            @series.GameCharacters = characters;
 
             return Ok(@series);
         }
@@ -120,40 +120,40 @@ namespace RAD302Assignment.Controllers
         }
     }
 
-    public class ClassesController : ApiController
-    {
-        private SeriesContext db = new SeriesContext();
+    //public class ClassesController : ApiController
+    //{
+    //    private SeriesContext db = new SeriesContext();
 
-        // GET: api/Classes
-        public IQueryable<Series> GetClasses()
-        {
-            return db.Series.Include(c => c.Characters);
-        }
+    //    // GET: api/Classes
+    //    public IQueryable<Series> GetClasses()
+    //    {
+    //        return db.Series.Include(c => c.Characters);
+    //    }
 
-        // GET: api/Classes/5
-        [ResponseType(typeof(Series))]
-        public IHttpActionResult GetClass(int id)
-        {
-            Series @series = db.Series.Find(id);
-            if (@series == null)
-            {
-                return NotFound();
-            }
+    //    // GET: api/Classes/5
+    //    [ResponseType(typeof(Series))]
+    //    public IHttpActionResult GetClass(int id)
+    //    {
+    //        Series @series = db.Series.Find(id);
+    //        if (@series == null)
+    //        {
+    //            return NotFound();
+    //        }
 
-            //  For each student where student.ClassID == class id, save student to a list
-            List<GameCharacter> students = db.GameCharacters.Where(s => s.SeriesID == @series.ID).ToList();
-            @series.Characters = students;
+    //        //  For each student where student.ClassID == class id, save student to a list
+    //        List<GameCharacter> students = db.GameCharacters.Where(s => s.SeriesID == @series.ID).ToList();
+    //        @series.Characters = students;
 
-            return Ok(@series);
-        }
+    //        return Ok(@series);
+    //    }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-    }
+    //    protected override void Dispose(bool disposing)
+    //    {
+    //        if (disposing)
+    //        {
+    //            db.Dispose();
+    //        }
+    //        base.Dispose(disposing);
+    //    }
+    //}
 }
