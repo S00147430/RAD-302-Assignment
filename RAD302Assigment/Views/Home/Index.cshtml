@@ -24,10 +24,9 @@
             <div class="row">
                 <h2 style="text-align: center">Paragraph about Series/Character</h2>
             </div>
-            <p id="PContent">
+            <p id="pContent">
 
             </p>
-            <ul id="tp-list" class="list-group" style="color:darkgrey"></ul>
         </div>
     </div>
 </body>
@@ -123,6 +122,7 @@
                             if (splitNewline[newline].substring(0, 11) != "Cite error:") {
                                 pText += splitNewline[newline];
                                 pText += "\n";
+                                $('<p>', { pText}).appendTo($('#pContent'));
                             }
                         }
                     }
@@ -131,6 +131,7 @@
                 pText = pText.replace(/\[\d+\]/g, ""); //Remove reference tags (e.x. [1], [4], etc)
                 document.getElementById('textarea').value = pText
                 document.getElementById('div_text').innerHTML = pText
+                $('<p>', { pText }).appendTo($('#pContent'));
             }
         });
 
@@ -156,6 +157,7 @@
                     // remove cite error
                     blurb.find('.mw-ext-cite-error').remove();
                     $('#article').html($(blurb).find('p'));
+                    $('<p>', { markup }).appendTo($('#pContent'));
 
                 },
                 error: function (errorMessage) {
@@ -170,11 +172,8 @@
                 url: completeURL,
                 processData: true,
                 success: function (data, status) {
+                    var imageSource = "http://en.wikipedia.org/w/api.php?action=query&titles=Al-Farabi&prop=pageimages&format=json&pithumbsize=100";
                     $("#imgThumnail").attr("src", imageSource);
-
-                    $.each(data.data.results[0].seriesSelected.items, function (key, item) {
-                        $('<p>', { text: item.name }).appendTo('#pContent');
-                    });
                 },
             })
 
@@ -209,13 +208,8 @@
                 url: completeURL,
                 processData: true,
                 success: function (data, status) {
-                    var imageSource = data.data.results[0].thumbnail.path + '.' + data.data.results[0].thumbnail.extension;
+                    var imageSource = "http://en.wikipedia.org/w/api.php?action=query&titles=Al-Farabi&prop=pageimages&format=json&pithumbsize=100";
                     $("#imgThumnail").attr("src", imageSource);
-
-                    $.each(data.data.results[0].comics.items, function (key, item) {
-                        $('<li>', { text: item.name }).appendTo('#lstComics');
-                    });
-
                 },
                 error: function (jqXHR, errorThrown) { alert(jqXHR.status) },
             })
@@ -252,7 +246,7 @@
                 pText = pText.replace(/\[\d+\]/g, ""); //Remove reference tags (e.x. [1], [4], etc)
                 document.getElementById('textarea').value = pText
                 document.getElementById('div_text').innerHTML = pText
-                $('<p>', { text}).appendTo($('#pContent'));
+                $('<p>', { pText}).appendTo($('#pContent'));
             }
         });
 
@@ -278,6 +272,7 @@
                     // remove cite error
                     blurb.find('.mw-ext-cite-error').remove();
                     $('#article').html($(blurb).find('p'));
+                    $('<p>', { markup }).appendTo($('#pContent'));
 
                 },
                 error: function (errorMessage) {
