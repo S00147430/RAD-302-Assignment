@@ -21,7 +21,7 @@ namespace RAD302Assignment.Migrations
             List<Series> series = new List<Series>()
             {
                 new Series {Name = "Devil May Cry", ID = 1 },
-                new Series {Name = "Metal Gear Solid", ID = 2 },
+                new Series {Name = "Metal Gear", ID = 2 },
                 new Series {Name = "Prince of Persia", ID = 3 }
             };
 

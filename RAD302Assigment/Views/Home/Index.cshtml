@@ -7,7 +7,7 @@
         <div class="col-md-4">
             <h2>Series List</h2>
             <input type="button" value="Get Series" class="btn btn-primary" onclick="getSeries()" />
-            <select id="series-list" size="5" onchange="characterSelected()" style="width:100%"></select>        
+            <select id="series-list" size="5" onchange="seriesSelected()" style="width:100%"></select>        
         </div>
 
         <div class="col-md-4">
@@ -24,9 +24,7 @@
             <div class="row">
                 <h2 style="text-align: center">Paragraph about Series/Character</h2>
             </div>
-            <p>
-
-
+            <p id="PContent">
 
             </p>
 
@@ -34,23 +32,11 @@
 
             <input type="button" value="Get Thumbnail/Paragrapgh" class="btn btn-primary" onclick="getTP()" />
         </div>
-
-
-        <p>
-            An approch to getting the summary / leading paragraphs / section 0 out
-            of Wikipedia articlies within the browser using JSONP with the Wikipedia
-            API.
-        </p>
-
-        <h2>Insert into textarea</h2>
-
-        <textarea id="textarea"></textarea>
-        <br>
-
-        <h2>Insert into div</h2>
-
-        <div id="div_text"></div>
     </div>
+
+    <p id="try">
+
+    </p>
 </body>
 <script>
 
@@ -106,15 +92,26 @@
             })
     }
 
-    function SeriesSelected() {
+    function seriesSelected() {
 
-        $('#lstComics').empty();
+        $('#series-list').empty();
 
+        var uri = "https://en.wikipedia.org/wiki/";
         var timestamp = Date.now();
         var hash = createHash(timestamp);
-        var characterID = $('#series-list option:selected').attr('id');
+        var seriesID = $('#series-list option:selected').attr('id');
+        var seriesName = $('#series-list option:selected').attr('name');
         var suffix = 'characters/' + characterID;
-        var completeURL = uri + suffix + '?&ts=' + timestamp + '&apikey=' + publicKey + '&hash=' + hash;
+        var completeURL = uri + seriesName;
+
+        $url = 'http://en.wikipedia.org/w/api.php?format=json&action=parse&page=Baseball&prop=text&section=0';
+        $ch = curl_init($url);
+        curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt ($ch, CURLOPT_USERAGENT, "TestScript"); // required by wikipedia.org server; use YOUR user agent with YOUR contact information. (otherwise your IP might get blocked)
+        $c = curl_exec($ch);
+
+        $json = json_decode($c);
+
 
         $.ajax(
             {
@@ -127,23 +124,30 @@
                     $("#imgThumnail").attr("src", imageSource);
 
                     $.each(data.data.results[0].comics.items, function (key, item) {
-                        $('<p>', { text: item.name }).appendTo('#lstComics');
+                        $('<p>', { text: item.name }).appendTo('#Pcontent');
                     });
-
                 },
-                error: function (jqXHR, errorThrown) { alert(jqXHR.status) },
             })
+    }
+
+    function Trial() {
+        var seriesName = $('#series-list option:selected').attr('name');
+        $('<li>', { seriesName }).appendTo('#try');
     }
 
     function characterSelected() {
 
         $('#series-list').empty();
+        var uri = "https://en.wikipedia.org/wiki/";
 
         var timestamp = Date.now();
         var hash = createHash(timestamp);
-        var characterID = $('#lstCharacters option:selected').attr('id');
+        var characterName = $('#gamecharacters-list option:selected').attr('name');
+        var characterID = $('#gamecharacters-list option:selected').attr('id');
+        var seriesName = $('#series-list option:selected').attr('name');
+        var seriesID = $('#series-list option:selected').attr('id');
         var suffix = 'characters/' + characterID;
-        var completeURL = uri + suffix + '?&ts=' + timestamp + '&apikey=' + publicKey + '&hash=' + hash;
+        var completeURL = uri + characterName + seriesName;
 
         $.ajax(
             {
