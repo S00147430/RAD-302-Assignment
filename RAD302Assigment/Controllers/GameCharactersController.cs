@@ -32,77 +32,10 @@ namespace RAD302Assignment.Controllers
                 return NotFound();
             }
 
-            //  For each student where student.ClassID == class id, save student to a list
             List<GameCharacter> characters = db.GameCharactersDB.Where(s => s.SeriesID == @series.ID).ToList();
             @series.GameCharacters = characters;
 
             return Ok(@series);
-        }
-
-        // PUT: api/GameCharacters/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutGameCharacter(int id, GameCharacter gameCharacter)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != gameCharacter.ID)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(gameCharacter).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!GameCharacterExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        // POST: api/GameCharacters
-        [ResponseType(typeof(GameCharacter))]
-        public IHttpActionResult PostGameCharacter(GameCharacter gameCharacter)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            db.GameCharactersDB.Add(gameCharacter);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = gameCharacter.ID }, gameCharacter);
-        }
-
-        // DELETE: api/GameCharacters/5
-        [ResponseType(typeof(GameCharacter))]
-        public IHttpActionResult DeleteGameCharacter(int id)
-        {
-            GameCharacter gameCharacter = db.GameCharactersDB.Find(id);
-            if (gameCharacter == null)
-            {
-                return NotFound();
-            }
-
-            db.GameCharactersDB.Remove(gameCharacter);
-            db.SaveChanges();
-
-            return Ok(gameCharacter);
         }
 
         protected override void Dispose(bool disposing)
@@ -112,48 +45,6 @@ namespace RAD302Assignment.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private bool GameCharacterExists(int id)
-        {
-            return db.GameCharactersDB.Count(e => e.ID == id) > 0;
-        }
+        }      
     }
-
-    //public class ClassesController : ApiController
-    //{
-    //    private SeriesContext db = new SeriesContext();
-
-    //    // GET: api/Classes
-    //    public IQueryable<Series> GetClasses()
-    //    {
-    //        return db.Series.Include(c => c.Characters);
-    //    }
-
-    //    // GET: api/Classes/5
-    //    [ResponseType(typeof(Series))]
-    //    public IHttpActionResult GetClass(int id)
-    //    {
-    //        Series @series = db.Series.Find(id);
-    //        if (@series == null)
-    //        {
-    //            return NotFound();
-    //        }
-
-    //        //  For each student where student.ClassID == class id, save student to a list
-    //        List<GameCharacter> students = db.GameCharacters.Where(s => s.SeriesID == @series.ID).ToList();
-    //        @series.Characters = students;
-
-    //        return Ok(@series);
-    //    }
-
-    //    protected override void Dispose(bool disposing)
-    //    {
-    //        if (disposing)
-    //        {
-    //            db.Dispose();
-    //        }
-    //        base.Dispose(disposing);
-    //    }
-    //}
 }

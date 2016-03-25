@@ -1,32 +1,42 @@
 ﻿<div class="jumbotron">
-    <h1>Series and Game Characters</h1>
+    <h1 style="color:blue; border-top:medium; border-width:medium; border-color:darkgrey"> Series and Game Characters </h1>
+
+<div class="row" style="color:crimson";>
+        <div class="col-md-4">
+            <h2>Series List</h2>
+            <input type="button" value="Get Series" class="btn btn-primary" onclick="getSeries()" />
+            <ul id="series-list" class="list-group" style="color:darkgrey" />
+            <input type="button" value="Get Thumbnail/Paragrapgh" class="btn btn-primary" onclick="getTP()" />
+        </div>
+
+        <div class="col-md-4">
+            <h2>Series Characters</h2>
+            <ul id="gamecharacters-list" class="list-group" style="color:darkgrey"></ul>
+            <input type="button" value="Get All Characters" class="btn btn-primary" onclick="getGameCharacters()" />
+        </div>
+
+        <div class="col-md-4">
+            <h2>Thumbnail</h2>
+            <img id="imgThumnail" width="300" height="300" style="color:black" />
+        </div>
+
+
+        <div class="col-md-4">
+            <h2>Paragraph about Series/Character</h2>
+        </div>
+        <p>
+
+
+
+        </p>
+
+        <ul id="gamecharacters-list" class="list-group" style="color:darkgrey"></ul>
+        <input type="button" value="Get All Characters" class="btn btn-primary" onclick="getGameCharacters()" />
+    </div>
 </div>
-<div class="row">
-
-    <div class="col-md-4">
-        <h2>Series List</h2>
-        <input type="button" value="Get Series" class="btn btn-primary" onclick="getSeries()" />
-        <ul id="Series-list" class="list-group" />
-    </div>
-
-    <div class="col-md-4">
-        <h2>Series Characters</h2>
-        <ul id="Characters-list" class="list-group"></ul>
-    </div>
-
-    <div class="col-md-4">
-        <h2>Thumbnail</h2>
-        <img id="imgThumnail" width="500" height="500" />
-    </div>
-    </div>
-
-    <div class="col-md-4">
-        <h2>Paragraph</h2>
-        <ul id="lstComics" />
-    </div>
 
 <script>
-    var uri = "http://localhost:59869/api/series";
+    
 
     function clearList()
     {
@@ -35,19 +45,40 @@
 
     function getSeries() {
         clearList();
-
+        var uri = "http://localhost:59869/api/series/";
         $.getJSON(uri).done(function (data) {
             $.each(data, function (key, item) {
-                $('<li>', { text: item.ID + ":" + item.Name }).appendTo($('#Series-list'));
+                $('<li>', { text: item.ID + ":" + item.Name }).appendTo($('#series-list'));
             });
         });
     }
 
     var currentSeries;
 
+    function getGameCharacters() {
+        clearList();
+        var uri = "http://localhost:59869/api/gamechracters/";
+        $.getJSON(uri).done(function (data) {
+            $.each(data, function (key, item) {
+                $('<li>', { text: item.ID + ":" + item.Name }).appendTo($('#gamecharacters-list'));
+            });
+        });
+    }
+
+    function getTP() {
+        clearList();
+        var uri = "http://localhost:59869/api/gamechracters/";
+        $.getJSON(uri).done(function (data) {
+            $.each(data, function (key, item) {
+                $('<li>', { text: item.ID + ":" + item.Name }).appendTo($('#gamecharacters-list'));
+            });
+        });
+    }
+
     function getGameCharactersForSeries() {
-        var id = $('#SeriesID').val();
-        $('#GameCharacters-list').empty();
+        var uri = "http://metalgear.wikia.com/wiki/Metal_Gear_Wiki";
+        var id = $('#seriesID').val();
+        $('#gamecharacters-list').empty();
 
         $.getJSON(uri + id).done(
             function (data) {

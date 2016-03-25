@@ -31,11 +31,12 @@ namespace RAD302Assignment.Migrations
             {
                 new GameCharacter {Name = "Dante", SeriesID = 1 },
                 new GameCharacter {Name = "Solid Snake", SeriesID = 2 },
-                new GameCharacter {Name = "The Prince", SeriesID = 3 },
+                new GameCharacter {Name = "Raiden", SeriesID = 2 },
+                new GameCharacter {Name = "The Prince", SeriesID = 3 }
             };
 
             gamecharacters.ForEach(c => context.GameCharactersDB.Add(c));
-            context.SaveChanges();
+            //context.SaveChanges();
         }
     }
 }
