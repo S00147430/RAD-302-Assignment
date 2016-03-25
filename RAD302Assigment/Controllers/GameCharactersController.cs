@@ -35,6 +35,28 @@ namespace RAD302Assigment.Controllers
             return Ok(gameCharacter);
         }
 
+        //For selected Characters.
+        //public IQueryable<GameCharacter> GetGameCharactersDB()
+        //{
+        //    return db.GameCharactersDB.Include(c => c.Name);
+        //}
+
+        //// GET: api/GameCharacters/5
+        //[ResponseType(typeof(Series))]
+        //public IHttpActionResult GetGameCharacter(int id)
+        //{
+        //    Series @series = db.SeriesDB.Find(id);
+        //    if (@series == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    List<GameCharacter> gameCharacters = db.GameCharactersDB.Where(s => s.SeriesID == @series.ID).ToList();
+        //    @series.GameCharacters = gameCharacters;
+
+        //    return Ok(gameCharacters);
+        //}
+
         // PUT: api/GameCharacters/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutGameCharacter(int id, GameCharacter gameCharacter)
