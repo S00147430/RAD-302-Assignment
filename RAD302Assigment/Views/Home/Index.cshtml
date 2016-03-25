@@ -30,8 +30,8 @@
 
         </p>
 
-        <ul id="gamecharacters-list" class="list-group" style="color:darkgrey"></ul>
-        <input type="button" value="Get All Characters" class="btn btn-primary" onclick="getGameCharacters()" />
+        <ul id="tp-list" class="list-group" style="color:darkgrey"></ul>
+        <input type="button" value="Get Page" class="btn btn-primary" onclick="getTP()" />
     </div>
 </div>
 
@@ -70,7 +70,7 @@
         var uri = "http://localhost:59869/api/gamechracters/";
         $.getJSON(uri).done(function (data) {
             $.each(data, function (key, item) {
-                $('<li>', { text: item.ID + ":" + item.Name }).appendTo($('#gamecharacters-list'));
+                $('<li>', { text: item.ID + ":" + item.Name }).appendTo($('#tp-list'));
             });
         });
     }
@@ -89,5 +89,28 @@
                 }
             })
     }
+
+    function getPage() {
+        
+        $url = 'http://metalgear.wikia.com/wiki/Metal_Gear_Wiki';
+        $ch = curl_init($url);
+        curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt ($ch, CURLOPT_USERAGENT, "TestScript"); // required by wikipedia.org server; use YOUR user agent with YOUR contact information. (otherwise your IP might get blocked)
+        $c = curl_exec($ch);
+
+        $json = json_decode($c);
+
+        $content = $json->{'parse'}->{'text'}->{'*'}; // get the main text content of the query (it's parsed HTML)
+
+        // pattern for first match of a paragraph
+        $pattern = '#<p>(.*?)</p>#s'; // http://www.phpbuilder.com/board/showthread.php?t=10352690
+        if(preg_match_all($pattern, $content, $matches))
+        {
+            // print $matches[0]; // content of the first paragraph (including wrapping <p> tag)
+            print strip_tags(implode("\n\n",$matches[1])); // Content of the first paragraph without the HTML tags.
+        }
+    }
+
+
 
 </script>
