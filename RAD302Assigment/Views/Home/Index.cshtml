@@ -7,15 +7,13 @@
         <div class="col-md-4">
             <h2>Series List</h2>
             <input type="button" value="Get Series" class="btn btn-primary" onclick="getSeries()" />
-            <ul id="series-list" class="list-group" style="color:darkgrey" />
-
-            <input type="button" value="Get Thumbnail/Paragrapgh" class="btn btn-primary" onclick="getTP()" />
+            <select id="series-list" size="5" onchange="characterSelected()" style="width:100%"></select>        
         </div>
 
         <div class="col-md-4">
             <h2>Series Characters</h2>
-            <ul id="gamecharacters-list" class="list-group" style="color:darkgrey"></ul>
             <input type="button" value="Get All Characters" class="btn btn-primary" onclick="getGameCharacters()" />
+            <select id="gamecharacters-list" size="5" onchange="characterSelected()" style="width:100%"></select>        
         </div>
 
         <div class="row; text-center";>
@@ -33,8 +31,25 @@
             </p>
 
             <ul id="tp-list" class="list-group" style="color:darkgrey"></ul>
-            <input type="button" value="Get Page" class="btn btn-primary" onclick="getTP()" />
+
+            <input type="button" value="Get Thumbnail/Paragrapgh" class="btn btn-primary" onclick="getTP()" />
         </div>
+
+
+        <p>
+            An approch to getting the summary / leading paragraphs / section 0 out
+            of Wikipedia articlies within the browser using JSONP with the Wikipedia
+            API.
+        </p>
+
+        <h2>Insert into textarea</h2>
+
+        <textarea id="textarea"></textarea>
+        <br>
+
+        <h2>Insert into div</h2>
+
+        <div id="div_text"></div>
     </div>
 </body>
 <script>
@@ -49,7 +64,7 @@
         var uri = "http://localhost:59869/api/Series/";
         $.getJSON(uri).done(function (data) {
             $.each(data, function (key, item) {
-                $('<li>', { text: item.ID + ":" + item.Name }).appendTo($('#series-list'));
+                $('<option>', { text: item.ID + ":" + item.Name }).appendTo($('#series-list'));
             });
         });
     }
@@ -61,7 +76,7 @@
         var uri = "http://localhost:59869/api/GameCharacters";
         $.getJSON(uri).done(function (data) {
             $.each(data, function (key, item) {
-                $('<li>', { text: item.ID + ":" + item.Name }).appendTo($('#gamecharacters-list'));
+                $('<option>', { text: item.ID + ":" + item.Name }).appendTo($('#gamecharacters-list'));
             });
         });
     }
@@ -91,25 +106,62 @@
             })
     }
 
-    function getPage() {
-        
-        $url = 'http://metalgear.wikia.com/wiki/Metal_Gear_Wiki';
-        $ch = curl_init($url);
-        curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt ($ch, CURLOPT_USERAGENT, "TestScript"); // required by wikipedia.org server; use YOUR user agent with YOUR contact information. (otherwise your IP might get blocked)
-        $c = curl_exec($ch);
+    function SeriesSelected() {
 
-        $json = json_decode($c);
+        $('#lstComics').empty();
 
-        $content = $json->{'parse'}->{'text'}->{'*'}; // get the main text content of the query (it's parsed HTML)
+        var timestamp = Date.now();
+        var hash = createHash(timestamp);
+        var characterID = $('#series-list option:selected').attr('id');
+        var suffix = 'characters/' + characterID;
+        var completeURL = uri + suffix + '?&ts=' + timestamp + '&apikey=' + publicKey + '&hash=' + hash;
 
-        // pattern for first match of a paragraph
-        $pattern = '#<p>(.*?)</p>#s'; // http://www.phpbuilder.com/board/showthread.php?t=10352690
-        if(preg_match_all($pattern, $content, $matches))
-        {
-            // print $matches[0]; // content of the first paragraph (including wrapping <p> tag)
-            print strip_tags(implode("\n\n",$matches[1])); // Content of the first paragraph without the HTML tags.
-        }
+        $.ajax(
+            {
+                type: 'GET',
+                dataType: 'json',
+                url: completeURL,
+                processData: true,
+                success: function (data, status) {
+                    var imageSource = data.data.results[0].thumbnail.path + '.' + data.data.results[0].thumbnail.extension;
+                    $("#imgThumnail").attr("src", imageSource);
+
+                    $.each(data.data.results[0].comics.items, function (key, item) {
+                        $('<p>', { text: item.name }).appendTo('#lstComics');
+                    });
+
+                },
+                error: function (jqXHR, errorThrown) { alert(jqXHR.status) },
+            })
+    }
+
+    function characterSelected() {
+
+        $('#series-list').empty();
+
+        var timestamp = Date.now();
+        var hash = createHash(timestamp);
+        var characterID = $('#lstCharacters option:selected').attr('id');
+        var suffix = 'characters/' + characterID;
+        var completeURL = uri + suffix + '?&ts=' + timestamp + '&apikey=' + publicKey + '&hash=' + hash;
+
+        $.ajax(
+            {
+                type: 'GET',
+                dataType: 'json',
+                url: completeURL,
+                processData: true,
+                success: function (data, status) {
+                    var imageSource = data.data.results[0].thumbnail.path + '.' + data.data.results[0].thumbnail.extension;
+                    $("#imgThumnail").attr("src", imageSource);
+
+                    $.each(data.data.results[0].comics.items, function (key, item) {
+                        $('<li>', { text: item.name }).appendTo('#lstComics');
+                    });
+
+                },
+                error: function (jqXHR, errorThrown) { alert(jqXHR.status) },
+            })
     }
 
     $(document).ready(function() {
@@ -124,6 +176,45 @@
             $("#container").append(div);
         });
         image.attr("src", "WP.jpg");
+    });
+
+    var url = "http://en.wikipedia.org/wiki/Stack_Overflow";
+    var title = url.split("/");
+    title = title[title.length - 1];
+
+    //Get Leading paragraphs (section 0)
+    $.getJSON("http://en.wikipedia.org/w/api.php?action=parse&page=" + title + "&prop=text&section=0&format=json&callback=?", function (data) {
+        for (text in data.parse.text) {
+            var text = data.parse.text[text].split("<p>");
+            var pText = "";
+
+            for (p in text) {
+                //Remove html comment
+                text[p] = text[p].split("<!--");
+                if (text[p].length > 1) {
+                    text[p][0] = text[p][0].split(/\r\n|\r|\n/);
+                    text[p][0] = text[p][0][0];
+                    text[p][0] += "</p> ";
+                }
+                text[p] = text[p][0];
+
+                //Construct a string from paragraphs
+                if (text[p].indexOf("</p>") == text[p].length - 5) {
+                    var htmlStrip = text[p].replace(/<(?:.|\n)*?>/gm, '') //Remove HTML
+                    var splitNewline = htmlStrip.split(/\r\n|\r|\n/); //Split on newlines
+                    for (newline in splitNewline) {
+                        if (splitNewline[newline].substring(0, 11) != "Cite error:") {
+                            pText += splitNewline[newline];
+                            pText += "\n";
+                        }
+                    }
+                }
+            }
+            pText = pText.substring(0, pText.length - 2); //Remove extra newline
+            pText = pText.replace(/\[\d+\]/g, ""); //Remove reference tags (e.x. [1], [4], etc)
+            document.getElementById('textarea').value = pText
+            document.getElementById('div_text').innerHTML = pText
+        }
     });
 
 
