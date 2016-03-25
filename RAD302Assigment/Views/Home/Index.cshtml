@@ -1,11 +1,14 @@
-﻿<div class="jumbotron">
-    <h1 style="color:blue; border-top:medium; border-width:medium; border-color:darkgrey"> Series and Game Characters </h1>
+﻿<body style="background-image:url(http://i.imgur.com/lR0O3Wm.jpg); color:black;">
+    <div>
+        <h1 style="color:darkblue; text-align:center; border:solid; border-color:indigo;" class="container; alert-danger"> Series and Game Characters </h1>
+    </div>
 
-<div class="row" style="color:crimson";>
+    <div class="row; alert-danger" style="color:crimson; border:solid; border-color:darkblue;" ;>
         <div class="col-md-4">
             <h2>Series List</h2>
             <input type="button" value="Get Series" class="btn btn-primary" onclick="getSeries()" />
             <ul id="series-list" class="list-group" style="color:darkgrey" />
+
             <input type="button" value="Get Thumbnail/Paragrapgh" class="btn btn-primary" onclick="getTP()" />
         </div>
 
@@ -15,26 +18,25 @@
             <input type="button" value="Get All Characters" class="btn btn-primary" onclick="getGameCharacters()" />
         </div>
 
-        <div class="col-md-4">
-            <h2>Thumbnail</h2>
-            <img id="imgThumnail" width="300" height="300" style="color:black" />
+        <div class="row; text-center";>
+            <div class="col-md-4">
+                <h2>Thumbnail</h2>
+                <img id="imgThumnail" width="300" height="300" style="color:black" />
+            </div>
+            <div class="row">
+                <h2 style="text-align: center">Paragraph about Series/Character</h2>
+            </div>
+            <p>
+
+
+
+            </p>
+
+            <ul id="tp-list" class="list-group" style="color:darkgrey"></ul>
+            <input type="button" value="Get Page" class="btn btn-primary" onclick="getTP()" />
         </div>
-
-
-        <div class="col-md-4">
-            <h2>Paragraph about Series/Character</h2>
-        </div>
-        <p>
-
-
-
-        </p>
-
-        <ul id="tp-list" class="list-group" style="color:darkgrey"></ul>
-        <input type="button" value="Get Page" class="btn btn-primary" onclick="getTP()" />
     </div>
-</div>
-
+</body>
 <script>
     
 
@@ -111,6 +113,19 @@
         }
     }
 
+    $(document).ready(function() {
+        var image = $("<img>");
+        var div = $("<div>")
+        image.load(function() {
+            div.css({
+                "width": this.width,
+                "height": this.height,
+                "background-image": "url(" + this.src + ")"
+            });
+            $("#container").append(div);
+        });
+        image.attr("src", "WP.jpg");
+    });
 
 
 </script>
