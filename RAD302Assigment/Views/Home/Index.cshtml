@@ -27,16 +27,9 @@
             <p id="PContent">
 
             </p>
-
             <ul id="tp-list" class="list-group" style="color:darkgrey"></ul>
-
-            <input type="button" value="Get Thumbnail/Paragrapgh" class="btn btn-primary" onclick="getTP()" />
         </div>
     </div>
-
-    <p id="try">
-
-    </p>
 </body>
 <script>
 
@@ -67,16 +60,6 @@
         });
     }
 
-    function getTP() {
-        clearList();
-        var uri = "http://localhost:59869/api/gamechracters/";
-        $.getJSON(uri).done(function (data) {
-            $.each(data, function (key, item) {
-                $('<li>', { text: item.ID + ":" + item.Name }).appendTo($('#tp-list'));
-            });
-        });
-    }
-
     function getGameCharactersForSeries() {
         var uri = "http://metalgear.wikia.com/wiki/Metal_Gear_Wiki";
         var id = $('#seriesID').val();
@@ -94,8 +77,6 @@
 
     function seriesSelected() {
 
-        $('#series-list').empty();
-
         var uri = "https://en.wikipedia.org/wiki/";
         var timestamp = Date.now();
         var hash = createHash(timestamp);
@@ -104,14 +85,23 @@
         var suffix = 'characters/' + characterID;
         var completeURL = uri + seriesName;
 
-        $url = 'http://en.wikipedia.org/w/api.php?format=json&action=parse&page=Baseball&prop=text&section=0';
-        $ch = curl_init($url);
-        curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt ($ch, CURLOPT_USERAGENT, "TestScript"); // required by wikipedia.org server; use YOUR user agent with YOUR contact information. (otherwise your IP might get blocked)
-        $c = curl_exec($ch);
+        $.getJSON(completeURL + uri, {
+        titles: "India",
+        prop: "pageimages",
+        pithumbsize: 150
+        },
 
-        $json = json_decode($c);
-
+          function(data) {
+            var source = "";
+            var imageUrl = GetAttributeValue(data.query.pages);
+            if (imageUrl == "") {
+              $("#imgThumbnail").append("<div>No image found</div>");
+            } else {
+              var img = "<img src=\"" + imageUrl + "\">"
+              $("#imgThumbnail").append(img);
+            }
+          }
+        );
 
         $.ajax(
             {
@@ -120,7 +110,7 @@
                 url: completeURL,
                 processData: true,
                 success: function (data, status) {
-                    var imageSource = data.data.results[0].thumbnail.path + '.' + data.data.results[0].thumbnail.extension;
+                    var imageSource = upload.wikimedia.org/wikipedia/en/thumb/a/a2/Metal_Gear_%28series%29_logos.png/256px-Metal_Gear_%28series%29_logos.png;
                     $("#imgThumnail").attr("src", imageSource);
 
                     $.each(data.data.results[0].comics.items, function (key, item) {
@@ -130,14 +120,8 @@
             })
     }
 
-    function Trial() {
-        var seriesName = $('#series-list option:selected').attr('name');
-        $('<li>', { seriesName }).appendTo('#try');
-    }
-
     function characterSelected() {
 
-        $('#series-list').empty();
         var uri = "https://en.wikipedia.org/wiki/";
 
         var timestamp = Date.now();
@@ -147,7 +131,7 @@
         var seriesName = $('#series-list option:selected').attr('name');
         var seriesID = $('#series-list option:selected').attr('id');
         var suffix = 'characters/' + characterID;
-        var completeURL = uri + characterName + seriesName;
+        var completeURL = uri + characterName + (seriesName);
 
         $.ajax(
             {
