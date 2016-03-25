@@ -12,44 +12,44 @@ using RAD302Assignment.Models;
 
 namespace RAD302Assigment.Controllers
 {
-    public class GameCharactersController : ApiController
+    public class SeriesController : ApiController
     {
         private SeriesContext db = new SeriesContext();
 
-        // GET: api/GameCharacters
-        public IQueryable<GameCharacter> GetGameCharactersDB()
+        // GET: api/Series
+        public IQueryable<Series> GetSeriesDB()
         {
-            return db.GameCharactersDB;
+            return db.SeriesDB;
         }
 
-        // GET: api/GameCharacters/5
-        [ResponseType(typeof(GameCharacter))]
-        public IHttpActionResult GetGameCharacter(int id)
+        // GET: api/Series/5
+        [ResponseType(typeof(Series))]
+        public IHttpActionResult GetSeries(int id)
         {
-            GameCharacter gameCharacter = db.GameCharactersDB.Find(id);
-            if (gameCharacter == null)
+            Series series = db.SeriesDB.Find(id);
+            if (series == null)
             {
                 return NotFound();
             }
 
-            return Ok(gameCharacter);
+            return Ok(series);
         }
 
-        // PUT: api/GameCharacters/5
+        // PUT: api/Series/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutGameCharacter(int id, GameCharacter gameCharacter)
+        public IHttpActionResult PutSeries(int id, Series series)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != gameCharacter.ID)
+            if (id != series.ID)
             {
                 return BadRequest();
             }
 
-            db.Entry(gameCharacter).State = EntityState.Modified;
+            db.Entry(series).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +57,7 @@ namespace RAD302Assigment.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!GameCharacterExists(id))
+                if (!SeriesExists(id))
                 {
                     return NotFound();
                 }
@@ -70,35 +70,35 @@ namespace RAD302Assigment.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/GameCharacters
-        [ResponseType(typeof(GameCharacter))]
-        public IHttpActionResult PostGameCharacter(GameCharacter gameCharacter)
+        // POST: api/Series
+        [ResponseType(typeof(Series))]
+        public IHttpActionResult PostSeries(Series series)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.GameCharactersDB.Add(gameCharacter);
+            db.SeriesDB.Add(series);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = gameCharacter.ID }, gameCharacter);
+            return CreatedAtRoute("DefaultApi", new { id = series.ID }, series);
         }
 
-        // DELETE: api/GameCharacters/5
-        [ResponseType(typeof(GameCharacter))]
-        public IHttpActionResult DeleteGameCharacter(int id)
+        // DELETE: api/Series/5
+        [ResponseType(typeof(Series))]
+        public IHttpActionResult DeleteSeries(int id)
         {
-            GameCharacter gameCharacter = db.GameCharactersDB.Find(id);
-            if (gameCharacter == null)
+            Series series = db.SeriesDB.Find(id);
+            if (series == null)
             {
                 return NotFound();
             }
 
-            db.GameCharactersDB.Remove(gameCharacter);
+            db.SeriesDB.Remove(series);
             db.SaveChanges();
 
-            return Ok(gameCharacter);
+            return Ok(series);
         }
 
         protected override void Dispose(bool disposing)
@@ -110,9 +110,9 @@ namespace RAD302Assigment.Controllers
             base.Dispose(disposing);
         }
 
-        private bool GameCharacterExists(int id)
+        private bool SeriesExists(int id)
         {
-            return db.GameCharactersDB.Count(e => e.ID == id) > 0;
+            return db.SeriesDB.Count(e => e.ID == id) > 0;
         }
     }
 }

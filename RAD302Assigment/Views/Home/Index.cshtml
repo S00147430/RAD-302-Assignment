@@ -38,7 +38,6 @@
     </div>
 </body>
 <script>
-    
 
     function clearList()
     {
@@ -47,7 +46,7 @@
 
     function getSeries() {
         clearList();
-        var uri = "http://localhost:59869/api/series/";
+        var uri = "http://localhost:59869/api/Series/";
         $.getJSON(uri).done(function (data) {
             $.each(data, function (key, item) {
                 $('<li>', { text: item.ID + ":" + item.Name }).appendTo($('#series-list'));
@@ -59,7 +58,7 @@
 
     function getGameCharacters() {
         clearList();
-        var uri = "http://localhost:59869/api/gamechracters/";
+        var uri = "http://localhost:59869/api/GameCharacters";
         $.getJSON(uri).done(function (data) {
             $.each(data, function (key, item) {
                 $('<li>', { text: item.ID + ":" + item.Name }).appendTo($('#gamecharacters-list'));
