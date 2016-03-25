@@ -31,7 +31,7 @@ namespace RAD302Assignment.Models
         public DbSet<GameCharacter> GameCharactersDB { get; set; }
         public DbSet<Series> SeriesDB { get; set; }
 
-        public SeriesContext() : base("SeriesConnection")
+        public SeriesContext() : base("SeriesConnection3")
         {
             //this.Configuration.LazyLoadingEnabled = false;
         }

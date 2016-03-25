@@ -27,14 +27,14 @@ namespace RAD302Assignment.Migrations
 
             series.ForEach(s => context.SeriesDB.Add(s));
 
-            //List<GameCharacter> gamecharacters = new List<GameCharacter>()
-            //{
-            //    new GameCharacter {Name = "Dante", SeriesID = 1 },
-            //    new GameCharacter {Name = "Solid Snake", SeriesID = 2 },
-            //    new GameCharacter {Name = "The Prince", SeriesID = 3 },
-            //};
+            List<GameCharacter> gamecharacters = new List<GameCharacter>()
+            {
+                new GameCharacter {Name = "Dante", SeriesID = 1 },
+                new GameCharacter {Name = "Solid Snake", SeriesID = 2 },
+                new GameCharacter {Name = "The Prince", SeriesID = 3 },
+            };
 
-            //gamecharacters.ForEach(c => context.GameCharactersDB.Add(c));
+            gamecharacters.ForEach(c => context.GameCharactersDB.Add(c));
             context.SaveChanges();
         }
     }
